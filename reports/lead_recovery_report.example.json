@@ -1,0 +1,50 @@
+{
+  "engine": "LEAD_RECOVERY_AUDIT",
+  "mode": "report",
+  "status": "OK",
+  "timestamp_utc": "2026-04-11T10:45:00Z",
+  "input_summary": {
+    "lead_count": 5,
+    "excluded_count": 1,
+    "scored_count": 4
+  },
+  "summary": {
+    "high_priority_count": 2,
+    "estimated_recoverable_value": 4900,
+    "top_actions": [
+      "Follow up on proposal-stage leads within 24 hours.",
+      "Reactivate qualified leads with a low-friction next step.",
+      "Review high-value contacted leads before they go stale."
+    ]
+  },
+  "top_recovery_queue": [
+    {
+      "lead_id": "L-001",
+      "normalized_status": "proposal",
+      "recovery_score": 88,
+      "priority_band": "P1",
+      "urgency": "high",
+      "recommended_action": "Send direct personalized follow-up within 24 hours.",
+      "message_angle": "proposal_nudge",
+      "reason_summary": "High value, prior engagement, and overdue after proposal stage.",
+      "next_follow_up_date": "2026-04-12"
+    },
+    {
+      "lead_id": "L-002",
+      "normalized_status": "qualified",
+      "recovery_score": 74,
+      "priority_band": "P2",
+      "urgency": "medium",
+      "recommended_action": "Review notes and send tailored reactivation this week.",
+      "message_angle": "qualified_revival",
+      "reason_summary": "Good fit signals and prior conversation, but momentum decayed.",
+      "next_follow_up_date": "2026-04-14"
+    }
+  ],
+  "artifacts": [
+    "reports/lead_recovery_report.example.json",
+    "samples/leads_demo.v1.json",
+    "config/lead_recovery_scoring.v1.json"
+  ],
+  "recommended_next_action": "Implement CLI command to ingest the demo dataset and generate this envelope automatically."
+}
