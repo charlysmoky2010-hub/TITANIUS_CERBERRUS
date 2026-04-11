@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "titanius-cerberrus"
+version = "0.1.0"
+description = "Revenue-focused orchestration core with a first working lead recovery audit workflow."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+titanius = "titanius_cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
