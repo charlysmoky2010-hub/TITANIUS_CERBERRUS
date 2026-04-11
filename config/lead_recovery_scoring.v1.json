@@ -1,0 +1,73 @@
+{
+  "engine": "LEAD_RECOVERY_AUDIT",
+  "version": "1.0.0",
+  "description": "Scoring policy for prioritizing stale leads with the highest recovery potential.",
+  "weights": {
+    "staleness_score": 0.30,
+    "value_score": 0.25,
+    "engagement_score": 0.20,
+    "stage_score": 0.15,
+    "contactability_score": 0.10
+  },
+  "priority_bands": {
+    "P1": {
+      "min": 80,
+      "max": 100,
+      "label": "immediate"
+    },
+    "P2": {
+      "min": 60,
+      "max": 79,
+      "label": "this_week"
+    },
+    "P3": {
+      "min": 40,
+      "max": 59,
+      "label": "review"
+    },
+    "P4": {
+      "min": 0,
+      "max": 39,
+      "label": "low"
+    }
+  },
+  "status_normalization": {
+    "new": "new",
+    "open": "contacted",
+    "contacted": "contacted",
+    "awaiting reply": "waiting",
+    "waiting": "waiting",
+    "stale": "stale",
+    "qualified": "qualified",
+    "proposal sent": "proposal",
+    "proposal": "proposal",
+    "won": "won",
+    "closed won": "won",
+    "lost": "lost",
+    "closed lost": "lost",
+    "do not contact": "do_not_contact"
+  },
+  "exclusions": [
+    "won",
+    "lost",
+    "do_not_contact"
+  ],
+  "staleness_days": {
+    "hot": 7,
+    "warm": 14,
+    "stale": 30,
+    "critical": 60
+  },
+  "action_rules": {
+    "P1": "Send direct personalized follow-up within 24 hours.",
+    "P2": "Review notes and send tailored reactivation this week.",
+    "P3": "Check data quality before follow-up.",
+    "P4": "Deprioritize unless new signal appears."
+  },
+  "message_angles": {
+    "value_reactivation": "Reopen the conversation around business value and unresolved goals.",
+    "proposal_nudge": "Follow up on the previously discussed proposal and remove friction.",
+    "qualified_revival": "Reference prior fit signals and invite a simple next step.",
+    "data_gap_review": "Request missing information before active recovery."
+  }
+}
