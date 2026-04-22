@@ -4,49 +4,85 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TITANIUS_CERBERRUS</title>
-  <meta name="description" content="Recover missed leads and turn messy prospect data into a weekly money queue." />
+  <meta name="description" content="Turn messy prospect data into a ranked revenue recovery queue with the lead_recovery_audit workflow." />
   <style>
     body { font-family: Arial, sans-serif; margin: 0; background: #0b1020; color: #eef2ff; }
-    .wrap { max-width: 920px; margin: 0 auto; padding: 40px 20px 80px; }
-    h1 { font-size: 48px; line-height: 1.1; }
-    h2 { margin-top: 40px; }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 40px 20px 80px; }
+    h1 { font-size: 48px; line-height: 1.08; margin-bottom: 16px; }
+    h2 { margin-top: 0; }
     p, li { color: #c7d2fe; line-height: 1.6; }
+    .eyebrow { color: #8ab4ff; text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px; font-weight: bold; }
+    .hero { margin-bottom: 28px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
     .card { background: #151c33; border: 1px solid #2a355d; border-radius: 14px; padding: 20px; margin: 16px 0; }
     .btn { display: inline-block; margin-right: 12px; margin-top: 12px; padding: 12px 16px; border-radius: 10px; background: #8ab4ff; color: #08101f; text-decoration: none; font-weight: bold; }
     .btn.secondary { background: #1f2948; color: #eef2ff; }
-    code { display: block; background: #101728; padding: 16px; border-radius: 10px; overflow-x: auto; }
+    code { display: block; background: #101728; padding: 16px; border-radius: 10px; overflow-x: auto; white-space: pre-wrap; word-break: break-word; }
+    ul { padding-left: 20px; }
+    .muted { color: #9fb0df; }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <p>Public build log for a revenue workflow engine</p>
-    <h1>Recover missed leads and turn messy prospect data into a weekly money queue.</h1>
-    <p>TITANIUS_CERBERRUS helps founders, creators, consultants, and small businesses rank cold leads, identify high-value follow-ups, and turn pipeline chaos into usable action.</p>
+    <div class="hero">
+      <p class="eyebrow">Public storefront for practical revenue workflows</p>
+      <h1>Turn messy prospect data into a ranked revenue recovery queue.</h1>
+      <p>TITANIUS_CERBERRUS helps founders, creators, consultants, agencies, and small teams recover missed opportunities by scoring stale leads, prioritizing follow-ups, and turning pipeline chaos into usable action.</p>
+      <p class="muted">The first public workflow is <strong>lead_recovery_audit</strong>. It reads a lead list, normalizes statuses, excludes dead records, scores recovery potential, and outputs a queue you can actually act on.</p>
 
-    <a class="btn" href="https://github.com/charlysmoky2010-hub/TITANIUS_CERBERRUS">View GitHub Repo</a>
-    <a class="btn secondary" href="https://github.com/charlysmoky2010-hub/TITANIUS_CERBERRUS/tree/main/docs">Read Docs</a>
+      <a class="btn" href="https://github.com/charlysmoky2010-hub/TITANIUS_CERBERRUS">View GitHub Repo</a>
+      <a class="btn secondary" href="https://github.com/charlysmoky2010-hub/TITANIUS_CERBERRUS/blob/main/README.md">Read README</a>
+      <a class="btn secondary" href="https://github.com/charlysmoky2010-hub/TITANIUS_CERBERRUS/blob/main/reports/lead_recovery_report.example.json">Example Output</a>
+    </div>
 
-    <div class="card">
-      <h2>First offer</h2>
-      <p>Revenue Leak Audit</p>
-      <p>149 EUR</p>
-      <ul>
-        <li>Lead list review</li>
-        <li>Recovery scoring</li>
-        <li>Top opportunity queue</li>
-        <li>Recommended actions</li>
-        <li>JSON and markdown outputs</li>
-      </ul>
+    <div class="grid">
+      <div class="card">
+        <h2>What it does</h2>
+        <ul>
+          <li>Ingests JSON or CSV lead data</li>
+          <li>Normalizes messy pipeline states</li>
+          <li>Excludes won, lost, and uncontactable records</li>
+          <li>Scores remaining leads by recovery potential</li>
+          <li>Generates JSON and Markdown outputs</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Who it is for</h2>
+        <ul>
+          <li>Solo founders</li>
+          <li>Creators with inbound demand</li>
+          <li>Consultants and service businesses</li>
+          <li>Agencies with stale pipelines</li>
+          <li>Small teams that need a lightweight recovery workflow before a heavy CRM stack</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>First offer</h2>
+        <p><strong>Revenue Leak Audit</strong></p>
+        <p>Paid service powered by this repository's first workflow.</p>
+        <ul>
+          <li>Lead list review</li>
+          <li>Recovery scoring</li>
+          <li>Top opportunity queue</li>
+          <li>Recommended next actions</li>
+          <li>JSON and Markdown deliverables</li>
+        </ul>
+      </div>
     </div>
 
     <div class="card">
-      <h2>How the CLI works</h2>
-      <code>python titanius_cli.py run lead_recovery_audit --input samples/leads_demo.v1.json --mode report --output-json reports/lead_recovery.json --output-md reports/lead_recovery.md</code>
+      <h2>How to run it locally</h2>
+      <code>python -m pip install --upgrade pip
+pip install -e . pytest
+python titanius_cli.py list
+python titanius_cli.py run lead_recovery_audit --input samples/leads_demo.v1.json --mode report --output-json reports/lead_recovery.json --output-md reports/lead_recovery.md</code>
     </div>
 
     <div class="card">
-      <h2>Why it matters</h2>
-      <p>This is a focused revenue workflow for one painful question: which leads should you follow up with first if you want to recover real money?</p>
+      <h2>Why this repository is narrow on purpose</h2>
+      <p>This is not a generic agent demo pretending to do everything. The public repository is intentionally focused on one practical workflow that sits close to revenue: deciding which cold or neglected leads are still worth following up, and what to do next.</p>
     </div>
   </div>
 </body>
