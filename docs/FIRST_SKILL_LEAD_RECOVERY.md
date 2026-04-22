@@ -1,9 +1,21 @@
 # FIRST SKILL: LEAD RECOVERY AUDIT
 
+## What this is
+Lead Recovery Audit is the first public skill in TITANIUS_CERBERRUS.
+It turns a messy lead list into a ranked recovery queue so the next follow-up decision is clearer, faster, and more grounded.
+
 ## Why this is first
 This is the first real skill because it is close to money.
 It solves a painful, easy-to-understand problem:
 people and small businesses lose revenue because leads go cold, follow-up is inconsistent, and no one knows which prospects are still worth chasing.
+
+## Who it is for
+This workflow is especially relevant for:
+- founders
+- creators
+- consultants
+- agencies
+- small service teams
 
 ## Skill objective
 Turn a messy lead list into a ranked recovery queue.
@@ -116,6 +128,11 @@ Version 1 is good enough when it can:
 5. rank the best recovery opportunities
 6. emit JSON and markdown outputs
 7. explain why each high-priority lead was selected
+
+## Public positioning note
+The public repository should keep this skill narrow and practical.
+The point is not to pretend the system already does everything.
+The point is to ship one clear workflow, for one clear problem, with one clear output shape.
 
 ## Failure log rules
 Every failed run should produce notes on:
