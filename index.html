@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TITANIUS_CERBERRUS</title>
-  <meta name="description" content="Oceanic interface for an evolving octopus intelligence, with practical revenue workflows and experimental ecosystem controls." />
+  <meta name="description" content="Oceanic interface for an evolving octopus intelligence, with practical revenue workflows, ecosystem controls, and persistent nursery memory." />
   <style>
     :root {
       --bg: #060816;
@@ -126,6 +126,8 @@
       font-weight: 700;
       border: 1px solid transparent;
       transition: transform 0.18s ease, border-color 0.18s ease, opacity 0.18s ease;
+      cursor: pointer;
+      font: inherit;
     }
 
     .btn:hover { transform: translateY(-1px); }
@@ -648,6 +650,12 @@
             </div>
           </div>
           <p class="tiny-note">This section is metaphorical but operational: capital, memory, clarity, adaptation, and controlled risk together form the nursery. No ecosystem, no creature.</p>
+          <div class="button-row" style="margin-top: 14px;">
+            <button class="btn secondary" id="saveSnapshotBtn" type="button">Save memory snapshot</button>
+            <button class="btn secondary" id="hatchPresetBtn" type="button">Load hatch preset</button>
+            <button class="btn secondary" id="resetNurseryBtn" type="button">Reset nursery</button>
+          </div>
+          <p class="tiny-note" id="memoryStatus">Local memory active.</p>
         </div>
 
         <div class="score-ring">
@@ -682,6 +690,11 @@
         <div class="card">
           <h3>Nursery envelope</h3>
           <pre id="nurseryPreview"></pre>
+        </div>
+
+        <div class="card">
+          <h3>Memory archive</h3>
+          <pre id="memoryArchive"></pre>
         </div>
       </div>
     </section>
@@ -833,6 +846,11 @@ python titanius_cli.py run lead_recovery_audit --input samples/leads_demo.v1.jso
     const loopDepth = document.getElementById('loopDepth');
     const ecosystemAction = document.getElementById('ecosystemAction');
     const nurseryPreview = document.getElementById('nurseryPreview');
+    const memoryArchive = document.getElementById('memoryArchive');
+    const memoryStatus = document.getElementById('memoryStatus');
+    const saveSnapshotBtn = document.getElementById('saveSnapshotBtn');
+    const hatchPresetBtn = document.getElementById('hatchPresetBtn');
+    const resetNurseryBtn = document.getElementById('resetNurseryBtn');
     const stagePill = document.getElementById('stagePill');
     const eggHalo = document.getElementById('eggHalo');
     const eggShell = document.getElementById('eggShell');
@@ -848,6 +866,16 @@ python titanius_cli.py run lead_recovery_audit --input samples/leads_demo.v1.jso
       qualified: 76,
       proposal: 84
     };
+
+    const NURSERY_STORAGE_KEY = 'titanius_octopus_nursery_v2';
+    let nurseryMemory = {
+      boot_count: 0,
+      updated_at: null,
+      last_stage: null,
+      ecosystem: null,
+      history: []
+    };
+    let latestNurseryEnvelope = null;
 
     function euro(value) {
       return new Intl.NumberFormat('en-US', {
@@ -953,6 +981,97 @@ python titanius_cli.py run lead_recovery_audit --input samples/leads_demo.v1.jso
       return 'Lower risk pressure before growth becomes defensive instead of intelligent.';
     }
 
+    function defaultNurseryControls() {
+      return {
+        capital_flow: 62,
+        memory_depth: 54,
+        signal_clarity: 68,
+        adaptation_rate: 57,
+        risk_pressure: 29,
+        human_guidance: true
+      };
+    }
+
+    function applyNurseryControls(values) {
+      const current = values || defaultNurseryControls();
+      capitalFlow.value = current.capital_flow;
+      memoryDepth.value = current.memory_depth;
+      signalClarity.value = current.signal_clarity;
+      adaptationRate.value = current.adaptation_rate;
+      riskPressure.value = current.risk_pressure;
+      humanGuidance.checked = Boolean(current.human_guidance);
+    }
+
+    function currentNurseryControls() {
+      return {
+        capital_flow: Number(capitalFlow.value),
+        memory_depth: Number(memoryDepth.value),
+        signal_clarity: Number(signalClarity.value),
+        adaptation_rate: Number(adaptationRate.value),
+        risk_pressure: Number(riskPressure.value),
+        human_guidance: humanGuidance.checked
+      };
+    }
+
+    function updateMemoryArchive() {
+      const archive = {
+        boot_count: nurseryMemory.boot_count,
+        updated_at: nurseryMemory.updated_at,
+        last_stage: nurseryMemory.last_stage,
+        snapshots: nurseryMemory.history
+      };
+      memoryArchive.textContent = JSON.stringify(archive, null, 2);
+      memoryStatus.textContent = 'Local memory active · boots: ' + nurseryMemory.boot_count + ' · snapshots: ' + nurseryMemory.history.length + (nurseryMemory.last_stage ? ' · last stage: ' + nurseryMemory.last_stage : '');
+    }
+
+    function writeNurseryMemory(reason = 'auto', forceSnapshot = false) {
+      if (!latestNurseryEnvelope) return;
+
+      const previousStage = nurseryMemory.last_stage;
+      nurseryMemory.updated_at = new Date().toISOString();
+      nurseryMemory.last_stage = latestNurseryEnvelope.growth.stage;
+      nurseryMemory.ecosystem = currentNurseryControls();
+
+      if (forceSnapshot || previousStage !== latestNurseryEnvelope.growth.stage || nurseryMemory.history.length === 0) {
+        nurseryMemory.history.unshift({
+          timestamp: nurseryMemory.updated_at,
+          reason,
+          stage: latestNurseryEnvelope.growth.stage,
+          growth_score: latestNurseryEnvelope.growth.growth_score,
+          conscious_loop_depth: latestNurseryEnvelope.growth.conscious_loop_depth,
+          dominant_instinct: latestNurseryEnvelope.growth.dominant_instinct,
+          first_tentacle: latestNurseryEnvelope.growth.first_tentacle
+        });
+        nurseryMemory.history = nurseryMemory.history.slice(0, 12);
+      }
+
+      try {
+        localStorage.setItem(NURSERY_STORAGE_KEY, JSON.stringify(nurseryMemory));
+      } catch (error) {
+      }
+
+      updateMemoryArchive();
+    }
+
+    function loadNurseryMemory() {
+      let loaded = null;
+      try {
+        loaded = JSON.parse(localStorage.getItem(NURSERY_STORAGE_KEY) || 'null');
+      } catch (error) {
+        loaded = null;
+      }
+
+      nurseryMemory = {
+        boot_count: loaded && typeof loaded.boot_count === 'number' ? loaded.boot_count + 1 : 1,
+        updated_at: loaded && loaded.updated_at ? loaded.updated_at : null,
+        last_stage: loaded && loaded.last_stage ? loaded.last_stage : null,
+        ecosystem: loaded && loaded.ecosystem ? loaded.ecosystem : defaultNurseryControls(),
+        history: loaded && Array.isArray(loaded.history) ? loaded.history : []
+      };
+
+      applyNurseryControls(nurseryMemory.ecosystem);
+    }
+
     function renderNursery() {
       const capital = Number(capitalFlow.value);
       const memory = Number(memoryDepth.value);
@@ -1004,7 +1123,7 @@ python titanius_cli.py run lead_recovery_audit --input samples/leads_demo.v1.jso
       eggHalo.style.opacity = haloOpacity.toFixed(2);
       eggShell.style.boxShadow = '0 0 ' + shellGlow.toFixed(0) + 'px rgba(120, 170, 255, 0.24), inset 0 0 60px rgba(141, 217, 255, 0.08)';
 
-      const envelope = {
+      latestNurseryEnvelope = {
         engine: 'OCTOPUS_NURSERY',
         mode: 'ecosystem',
         status: 'OK',
@@ -1026,7 +1145,7 @@ python titanius_cli.py run lead_recovery_audit --input samples/leads_demo.v1.jso
         }
       };
 
-      nurseryPreview.textContent = JSON.stringify(envelope, null, 2);
+      nurseryPreview.textContent = JSON.stringify(latestNurseryEnvelope, null, 2);
     }
 
     function renderRecovery() {
@@ -1100,9 +1219,50 @@ python titanius_cli.py run lead_recovery_audit --input samples/leads_demo.v1.jso
       jsonPreview.textContent = JSON.stringify(envelope, null, 2);
     }
 
+    function saveSnapshot(reason = 'manual_snapshot') {
+      renderNursery();
+      writeNurseryMemory(reason, true);
+    }
+
+    function loadHatchPreset() {
+      applyNurseryControls({
+        capital_flow: 78,
+        memory_depth: 72,
+        signal_clarity: 76,
+        adaptation_rate: 68,
+        risk_pressure: 22,
+        human_guidance: true
+      });
+      renderNursery();
+      writeNurseryMemory('hatch_preset', true);
+    }
+
+    function resetNursery() {
+      nurseryMemory = {
+        boot_count: nurseryMemory.boot_count,
+        updated_at: null,
+        last_stage: null,
+        ecosystem: defaultNurseryControls(),
+        history: []
+      };
+      try {
+        localStorage.removeItem(NURSERY_STORAGE_KEY);
+      } catch (error) {
+      }
+      applyNurseryControls(defaultNurseryControls());
+      renderNursery();
+      writeNurseryMemory('reset', true);
+    }
+
     [capitalFlow, memoryDepth, signalClarity, adaptationRate, riskPressure, humanGuidance].forEach((el) => {
-      el.addEventListener('input', renderNursery);
-      el.addEventListener('change', renderNursery);
+      el.addEventListener('input', () => {
+        renderNursery();
+        writeNurseryMemory('autosave', false);
+      });
+      el.addEventListener('change', () => {
+        renderNursery();
+        writeNurseryMemory('autosave', false);
+      });
     });
 
     [stage, estimatedValue, daysStale, engagement, contactability, warmSignal].forEach((el) => {
@@ -1110,7 +1270,13 @@ python titanius_cli.py run lead_recovery_audit --input samples/leads_demo.v1.jso
       el.addEventListener('change', renderRecovery);
     });
 
+    saveSnapshotBtn.addEventListener('click', () => saveSnapshot('manual_snapshot'));
+    hatchPresetBtn.addEventListener('click', loadHatchPreset);
+    resetNurseryBtn.addEventListener('click', resetNursery);
+
+    loadNurseryMemory();
     renderNursery();
+    writeNurseryMemory('boot', nurseryMemory.history.length === 0);
     renderRecovery();
   </script>
 </body>
