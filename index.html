@@ -4,36 +4,357 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TITANIUS_CERBERRUS</title>
-  <meta name="description" content="Turn messy prospect data into a ranked revenue recovery queue with the lead_recovery_audit workflow." />
+  <meta name="description" content="Turn messy prospect data into a ranked revenue recovery queue with an experimental lead recovery lab." />
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #0b1020; color: #eef2ff; }
-    .wrap { max-width: 980px; margin: 0 auto; padding: 40px 20px 80px; }
-    h1 { font-size: 48px; line-height: 1.08; margin-bottom: 16px; }
-    h2 { margin-top: 0; }
-    p, li { color: #c7d2fe; line-height: 1.6; }
-    .eyebrow { color: #8ab4ff; text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px; font-weight: bold; }
-    .hero { margin-bottom: 28px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
-    .card { background: #151c33; border: 1px solid #2a355d; border-radius: 14px; padding: 20px; margin: 16px 0; }
-    .btn { display: inline-block; margin-right: 12px; margin-top: 12px; padding: 12px 16px; border-radius: 10px; background: #8ab4ff; color: #08101f; text-decoration: none; font-weight: bold; }
-    .btn.secondary { background: #1f2948; color: #eef2ff; }
-    code { display: block; background: #101728; padding: 16px; border-radius: 10px; overflow-x: auto; white-space: pre-wrap; word-break: break-word; }
-    ul { padding-left: 20px; }
-    .muted { color: #9fb0df; }
+    :root {
+      --bg: #060816;
+      --bg-soft: #0f1430;
+      --card: rgba(20, 27, 56, 0.82);
+      --line: rgba(125, 156, 255, 0.18);
+      --text: #edf2ff;
+      --muted: #aebceb;
+      --accent: #8ab4ff;
+      --accent-2: #89ffd8;
+      --danger: #ff9eb0;
+      --warning: #ffd37a;
+      --ok: #8df3a9;
+      --shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(138, 180, 255, 0.22), transparent 24%),
+        radial-gradient(circle at top right, rgba(137, 255, 216, 0.14), transparent 22%),
+        linear-gradient(180deg, #070b1a 0%, #05070f 100%);
+    }
+
+    .orb {
+      position: fixed;
+      width: 260px;
+      height: 260px;
+      border-radius: 999px;
+      filter: blur(60px);
+      opacity: 0.22;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .orb.one { background: #5e84ff; top: -60px; left: -40px; }
+    .orb.two { background: #45ffd6; right: -60px; top: 220px; }
+    .orb.three { background: #c08dff; left: 25%; bottom: -110px; }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 40px 20px 90px;
+    }
+
+    .hero {
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(10, 14, 33, 0.72);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: clamp(40px, 8vw, 72px);
+      line-height: 0.98;
+      margin: 0 0 18px;
+      max-width: 900px;
+    }
+
+    h2 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    p, li, label {
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .hero-copy {
+      max-width: 880px;
+      font-size: 18px;
+    }
+
+    .hero-note {
+      margin-top: 12px;
+      max-width: 860px;
+      color: #d8e1ff;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 13px 18px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      border: 1px solid transparent;
+      transition: transform 0.18s ease, border-color 0.18s ease, opacity 0.18s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn.primary {
+      color: #08101f;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    }
+    .btn.secondary {
+      color: var(--text);
+      background: rgba(19, 28, 59, 0.9);
+      border-color: var(--line);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    .lab {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.95fr;
+      gap: 16px;
+    }
+
+    .lab-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .field {
+      background: rgba(8, 12, 28, 0.45);
+      border: 1px solid rgba(138, 180, 255, 0.12);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .field label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .value-tag {
+      color: var(--text);
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    input[type="range"], select {
+      width: 100%;
+    }
+
+    input[type="range"] {
+      accent-color: var(--accent);
+    }
+
+    select {
+      background: #10172b;
+      color: var(--text);
+      border: 1px solid rgba(138, 180, 255, 0.18);
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .result-shell {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      height: 100%;
+    }
+
+    .score-ring {
+      border-radius: 24px;
+      padding: 18px;
+      background: linear-gradient(145deg, rgba(138, 180, 255, 0.16), rgba(137, 255, 216, 0.08));
+      border: 1px solid rgba(138, 180, 255, 0.2);
+    }
+
+    .score-line {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .score-number {
+      font-size: 64px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .priority-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #08101f;
+      background: var(--warning);
+    }
+
+    .priority-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(8, 16, 31, 0.75);
+    }
+
+    .micro-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .metric-box {
+      background: rgba(8, 12, 28, 0.48);
+      border: 1px solid rgba(138, 180, 255, 0.12);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .metric-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #8ea2df;
+      margin-bottom: 8px;
+    }
+
+    .metric-value {
+      color: var(--text);
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    pre {
+      margin: 0;
+      padding: 16px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      border-radius: 16px;
+      background: rgba(7, 10, 22, 0.88);
+      border: 1px solid rgba(138, 180, 255, 0.12);
+      color: #d8e1ff;
+      line-height: 1.5;
+    }
+
+    .muted {
+      color: #90a2d9;
+    }
+
+    .tiny-note {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #8ea2df;
+    }
+
+    .section-title {
+      margin-top: 30px;
+      margin-bottom: 12px;
+      font-size: 28px;
+    }
+
+    @media (max-width: 920px) {
+      .lab {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .lab-grid,
+      .micro-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero,
+      .card {
+        padding: 18px;
+      }
+
+      .score-number {
+        font-size: 54px;
+      }
+    }
   </style>
 </head>
 <body>
+  <div class="orb one"></div>
+  <div class="orb two"></div>
+  <div class="orb three"></div>
+
   <div class="wrap">
-    <div class="hero">
+    <section class="hero">
       <p class="eyebrow">Public storefront for practical revenue workflows</p>
       <h1>Turn messy prospect data into a ranked revenue recovery queue.</h1>
-      <p>TITANIUS_CERBERRUS helps founders, creators, consultants, agencies, and small teams recover missed opportunities by scoring stale leads, prioritizing follow-ups, and turning pipeline chaos into usable action.</p>
-      <p class="muted">The first public workflow is <strong>lead_recovery_audit</strong>. It reads a lead list, normalizes statuses, excludes dead records, scores recovery potential, and outputs a queue you can actually act on.</p>
+      <p class="hero-copy">TITANIUS_CERBERRUS helps founders, creators, consultants, agencies, and small teams recover missed opportunities by scoring stale leads, prioritizing follow-ups, and turning pipeline chaos into usable action.</p>
+      <p class="hero-note">The first public workflow is <strong>lead_recovery_audit</strong>. It reads a lead list, normalizes statuses, excludes dead records, scores recovery potential, and outputs a queue you can actually act on. Now it also has an experimental signal lab so visitors can play with the logic instead of just reading promises.</p>
 
-      <a class="btn" href="https://github.com/charlysmoky2010-hub/TITANIUS_CERBERRUS">View GitHub Repo</a>
-      <a class="btn secondary" href="https://github.com/charlysmoky2010-hub/TITANIUS_CERBERRUS/blob/main/README.md">Read README</a>
-      <a class="btn secondary" href="https://github.com/charlysmoky2010-hub/TITANIUS_CERBERRUS/blob/main/reports/lead_recovery_report.example.json">Example Output</a>
-    </div>
+      <div class="button-row">
+        <a class="btn primary" href="https://github.com/charlysmoky2010-hub/TITANIUS_CERBERRUS">View GitHub Repo</a>
+        <a class="btn secondary" href="https://github.com/charlysmoky2010-hub/TITANIUS_CERBERRUS/blob/main/README.md">Read README</a>
+        <a class="btn secondary" href="https://github.com/charlysmoky2010-hub/TITANIUS_CERBERRUS/blob/main/reports/lead_recovery_report.example.json">Example Output</a>
+      </div>
+    </section>
 
     <div class="grid">
       <div class="card">
@@ -59,9 +380,9 @@
       </div>
 
       <div class="card">
-        <h2>First offer</h2>
+        <h2>First public offer shape</h2>
         <p><strong>Revenue Leak Audit</strong></p>
-        <p>Paid service powered by this repository's first workflow.</p>
+        <p>A workflow-backed review of stale or neglected leads.</p>
         <ul>
           <li>Lead list review</li>
           <li>Recovery scoring</li>
@@ -72,18 +393,278 @@
       </div>
     </div>
 
-    <div class="card">
+    <h2 class="section-title">Recovery Signal Lab</h2>
+    <section class="lab">
+      <div class="card">
+        <h3>Experimental playground</h3>
+        <p>Move the signals around and watch the lead profile change. This is a public-facing creative demo, not the full production engine. Still, it gives visitors something alive to touch, which is more than most GitHub landing pages manage.</p>
+
+        <div class="lab-grid">
+          <div class="field">
+            <label for="stage">Pipeline stage <span class="value-tag" id="stageValue">proposal</span></label>
+            <select id="stage">
+              <option value="new">new</option>
+              <option value="contacted">contacted</option>
+              <option value="waiting">waiting</option>
+              <option value="stale">stale</option>
+              <option value="qualified">qualified</option>
+              <option value="proposal" selected>proposal</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="estimatedValue">Estimated value <span class="value-tag" id="estimatedValueValue">€4,500</span></label>
+            <input id="estimatedValue" type="range" min="250" max="10000" step="250" value="4500" />
+          </div>
+
+          <div class="field">
+            <label for="daysStale">Days since last contact <span class="value-tag" id="daysStaleValue">21 days</span></label>
+            <input id="daysStale" type="range" min="0" max="180" step="1" value="21" />
+          </div>
+
+          <div class="field">
+            <label for="engagement">Engagement signal <span class="value-tag" id="engagementValue">6 / 10</span></label>
+            <input id="engagement" type="range" min="0" max="10" step="1" value="6" />
+          </div>
+
+          <div class="field">
+            <label for="contactability">Contactability <span class="value-tag" id="contactabilityValue">8 / 10</span></label>
+            <input id="contactability" type="range" min="0" max="10" step="1" value="8" />
+          </div>
+
+          <div class="field">
+            <label for="warmSignal">Extra signal</label>
+            <div class="checkbox-row">
+              <input id="warmSignal" type="checkbox" checked />
+              <span>Recent reply, viewed proposal, or other warm signal</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="tiny-note">Design intent: keep the repo useful and revenue-near, but give it at least one playful surface where the logic becomes visible.</p>
+      </div>
+
+      <div class="result-shell">
+        <div class="score-ring">
+          <div class="score-line">
+            <div class="score-number" id="scoreNumber">82</div>
+            <div>
+              <div class="priority-pill" id="priorityPill"><span class="priority-dot"></span><span id="priorityText">HIGH PRIORITY</span></div>
+              <p class="muted" id="scoreSummary">Strong recovery candidate with enough value, contactability, and stage quality to justify fast follow-up.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="micro-grid">
+          <div class="metric-box">
+            <div class="metric-title">Recommended action</div>
+            <div class="metric-value" id="recommendedAction">Send a concise follow-up with a clear decision path.</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Message angle</div>
+            <div class="metric-value" id="messageAngle">Reference the existing context and reduce friction to one next step.</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Urgency</div>
+            <div class="metric-value" id="urgency">Act within 48 hours</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Reason summary</div>
+            <div class="metric-value" id="reasonSummary">Proposal-stage lead with usable contact data and live engagement signal.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Preview envelope</h3>
+          <pre id="jsonPreview"></pre>
+        </div>
+      </div>
+    </section>
+
+    <div class="card" style="margin-top: 20px;">
       <h2>How to run it locally</h2>
-      <code>python -m pip install --upgrade pip
+      <pre>python -m pip install --upgrade pip
 pip install -e . pytest
 python titanius_cli.py list
-python titanius_cli.py run lead_recovery_audit --input samples/leads_demo.v1.json --mode report --output-json reports/lead_recovery.json --output-md reports/lead_recovery.md</code>
+python titanius_cli.py run lead_recovery_audit --input samples/leads_demo.v1.json --mode report --output-json reports/lead_recovery.json --output-md reports/lead_recovery.md</pre>
     </div>
 
-    <div class="card">
+    <div class="card" style="margin-top: 16px;">
       <h2>Why this repository is narrow on purpose</h2>
-      <p>This is not a generic agent demo pretending to do everything. The public repository is intentionally focused on one practical workflow that sits close to revenue: deciding which cold or neglected leads are still worth following up, and what to do next.</p>
+      <p>This is not a generic agent demo pretending to do everything. The public repository is intentionally focused on one practical workflow that sits close to revenue: deciding which cold or neglected leads are still worth following up, and what to do next. The experimental layer exists to make the idea legible, not to blur the product.</p>
     </div>
   </div>
+
+  <script>
+    const stage = document.getElementById('stage');
+    const estimatedValue = document.getElementById('estimatedValue');
+    const daysStale = document.getElementById('daysStale');
+    const engagement = document.getElementById('engagement');
+    const contactability = document.getElementById('contactability');
+    const warmSignal = document.getElementById('warmSignal');
+
+    const stageValue = document.getElementById('stageValue');
+    const estimatedValueValue = document.getElementById('estimatedValueValue');
+    const daysStaleValue = document.getElementById('daysStaleValue');
+    const engagementValue = document.getElementById('engagementValue');
+    const contactabilityValue = document.getElementById('contactabilityValue');
+
+    const scoreNumber = document.getElementById('scoreNumber');
+    const priorityText = document.getElementById('priorityText');
+    const priorityPill = document.getElementById('priorityPill');
+    const scoreSummary = document.getElementById('scoreSummary');
+    const recommendedAction = document.getElementById('recommendedAction');
+    const messageAngle = document.getElementById('messageAngle');
+    const urgency = document.getElementById('urgency');
+    const reasonSummary = document.getElementById('reasonSummary');
+    const jsonPreview = document.getElementById('jsonPreview');
+
+    const stageWeights = {
+      new: 38,
+      contacted: 52,
+      waiting: 58,
+      stale: 64,
+      qualified: 76,
+      proposal: 84
+    };
+
+    function euro(value) {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'EUR',
+        maximumFractionDigits: 0
+      }).format(Number(value));
+    }
+
+    function clamp(number, min, max) {
+      return Math.max(min, Math.min(max, number));
+    }
+
+    function recoveryWindowScore(days) {
+      const distance = Math.abs(days - 24);
+      return clamp(100 - distance * 1.35, 18, 100);
+    }
+
+    function valueScore(value) {
+      return clamp((Math.log10(value) - 2) * 34, 15, 100);
+    }
+
+    function getPriority(score) {
+      if (score >= 80) return { label: 'HIGH PRIORITY', color: '#ffd37a', summary: 'Strong recovery candidate with enough value, contactability, and stage quality to justify fast follow-up.' };
+      if (score >= 62) return { label: 'NEXT WAVE', color: '#8df3a9', summary: 'Worth pursuing soon, but not before your strongest recovery opportunities.' };
+      return { label: 'BACKLOG', color: '#ff9eb0', summary: 'Interesting, but not a front-line recovery move unless capacity opens up.' };
+    }
+
+    function actionFor(stageName, days, hasWarmSignal) {
+      if (stageName === 'proposal') return 'Send a concise follow-up with a clear yes/no path and one simple next step.';
+      if (stageName === 'qualified') return 'Re-open the conversation with a concrete problem statement and a scheduling link.';
+      if (stageName === 'stale') return hasWarmSignal ? 'Use the warm signal immediately and reconnect while the context is still alive.' : 'Run a soft reactivation message before investing more effort.';
+      if (days > 45) return 'Use a short reactivation note and ask whether timing, budget, or relevance changed.';
+      return 'Send a lightweight follow-up and remove friction from the reply.';
+    }
+
+    function angleFor(stageName, hasWarmSignal, engagementScore) {
+      if (hasWarmSignal && engagementScore >= 7) return 'Reference the recent signal and frame the message as a simple continuation, not a cold restart.';
+      if (stageName === 'proposal') return 'Reduce the decision load: one takeaway, one path, one reply option.';
+      if (stageName === 'qualified') return 'Mirror the original pain point and show one fast route back into momentum.';
+      return 'Keep it short, contextual, and easy to answer in under a minute.';
+    }
+
+    function urgencyFor(score, days) {
+      if (score >= 80) return 'Act within 48 hours';
+      if (days >= 60) return 'Act this week before it goes fully cold';
+      if (score >= 62) return 'Act within 5 days';
+      return 'Queue for later or batch review';
+    }
+
+    function reasonFor(stageName, days, contactScore, hasWarmSignal) {
+      const parts = [];
+      parts.push(stageName + '-stage lead');
+      if (days <= 30) parts.push('still inside a workable reactivation window');
+      else if (days <= 75) parts.push('aging but not dead');
+      else parts.push('very stale and harder to revive');
+      if (contactScore >= 7) parts.push('usable contact routes');
+      if (hasWarmSignal) parts.push('warm signal detected');
+      return parts.join(', ') + '.';
+    }
+
+    function render() {
+      const currentStage = stage.value;
+      const currentValue = Number(estimatedValue.value);
+      const currentDays = Number(daysStale.value);
+      const currentEngagement = Number(engagement.value);
+      const currentContactability = Number(contactability.value);
+      const currentWarm = warmSignal.checked;
+
+      stageValue.textContent = currentStage;
+      estimatedValueValue.textContent = euro(currentValue);
+      daysStaleValue.textContent = currentDays + ' days';
+      engagementValue.textContent = currentEngagement + ' / 10';
+      contactabilityValue.textContent = currentContactability + ' / 10';
+
+      const stageScore = stageWeights[currentStage];
+      const staleScore = recoveryWindowScore(currentDays);
+      const revenueScore = valueScore(currentValue);
+      const engagementScore = currentEngagement * 10;
+      const contactScore = currentContactability * 10;
+      const warmBonus = currentWarm ? 8 : 0;
+
+      const rawScore = (
+        stageScore * 0.30 +
+        staleScore * 0.18 +
+        revenueScore * 0.20 +
+        engagementScore * 0.18 +
+        contactScore * 0.14 +
+        warmBonus
+      );
+
+      const score = Math.round(clamp(rawScore, 1, 99));
+      const priority = getPriority(score);
+      const action = actionFor(currentStage, currentDays, currentWarm);
+      const angle = angleFor(currentStage, currentWarm, currentEngagement);
+      const urgencyText = urgencyFor(score, currentDays);
+      const reason = reasonFor(currentStage, currentDays, currentContactability, currentWarm);
+
+      scoreNumber.textContent = score;
+      priorityText.textContent = priority.label;
+      priorityPill.style.background = priority.color;
+      scoreSummary.textContent = priority.summary;
+      recommendedAction.textContent = action;
+      messageAngle.textContent = angle;
+      urgency.textContent = urgencyText;
+      reasonSummary.textContent = reason;
+
+      const envelope = {
+        engine: 'LEAD_RECOVERY_AUDIT_PLAYGROUND',
+        mode: 'demo',
+        status: 'OK',
+        lead_profile: {
+          stage: currentStage,
+          estimated_value_eur: currentValue,
+          days_since_last_contact: currentDays,
+          engagement_signal: currentEngagement,
+          contactability: currentContactability,
+          warm_signal: currentWarm
+        },
+        output: {
+          recovery_score: score,
+          priority_band: priority.label,
+          recommended_action: action,
+          message_angle: angle,
+          urgency: urgencyText,
+          reason_summary: reason
+        }
+      };
+
+      jsonPreview.textContent = JSON.stringify(envelope, null, 2);
+    }
+
+    [stage, estimatedValue, daysStale, engagement, contactability, warmSignal].forEach((el) => {
+      el.addEventListener('input', render);
+      el.addEventListener('change', render);
+    });
+
+    render();
+  </script>
 </body>
 </html>
