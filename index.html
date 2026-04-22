@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TITANIUS_CERBERRUS</title>
-  <meta name="description" content="Turn messy prospect data into a ranked revenue recovery queue with an experimental lead recovery lab." />
+  <meta name="description" content="Oceanic interface for an evolving octopus intelligence, with practical revenue workflows and experimental ecosystem controls." />
   <style>
     :root {
       --bg: #060816;
@@ -22,6 +22,7 @@
     }
 
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -29,7 +30,8 @@
       background:
         radial-gradient(circle at top left, rgba(138, 180, 255, 0.22), transparent 24%),
         radial-gradient(circle at top right, rgba(137, 255, 216, 0.14), transparent 22%),
-        linear-gradient(180deg, #070b1a 0%, #05070f 100%);
+        linear-gradient(180deg, #07101f 0%, #05070f 100%);
+      overflow-x: hidden;
     }
 
     .orb {
@@ -97,13 +99,13 @@
     }
 
     .hero-copy {
-      max-width: 880px;
+      max-width: 920px;
       font-size: 18px;
     }
 
     .hero-note {
       margin-top: 12px;
-      max-width: 860px;
+      max-width: 920px;
       color: #d8e1ff;
     }
 
@@ -127,10 +129,12 @@
     }
 
     .btn:hover { transform: translateY(-1px); }
+
     .btn.primary {
       color: #08101f;
       background: linear-gradient(90deg, var(--accent), var(--accent-2));
     }
+
     .btn.secondary {
       color: var(--text);
       background: rgba(19, 28, 59, 0.9);
@@ -153,7 +157,8 @@
       backdrop-filter: blur(8px);
     }
 
-    .lab {
+    .lab,
+    .nursery {
       margin-top: 24px;
       display: grid;
       grid-template-columns: 1.2fr 0.95fr;
@@ -238,7 +243,8 @@
       line-height: 1;
     }
 
-    .priority-pill {
+    .priority-pill,
+    .stage-pill {
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -250,7 +256,8 @@
       background: var(--warning);
     }
 
-    .priority-dot {
+    .priority-dot,
+    .stage-dot {
       width: 10px;
       height: 10px;
       border-radius: 999px;
@@ -314,8 +321,163 @@
       font-size: 28px;
     }
 
+    .nursery-visual {
+      position: relative;
+      min-height: 520px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 18%, rgba(120, 175, 255, 0.2), transparent 24%),
+        linear-gradient(180deg, rgba(14, 29, 58, 0.96) 0%, rgba(5, 10, 24, 0.98) 100%);
+    }
+
+    .sea-current,
+    .sea-current.two {
+      position: absolute;
+      inset: auto -5% 12% -5%;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(95, 146, 255, 0.18), transparent 68%);
+      filter: blur(22px);
+      animation: drift 14s ease-in-out infinite;
+    }
+
+    .sea-current.two {
+      inset: auto -10% 36% -10%;
+      background: radial-gradient(circle, rgba(96, 255, 214, 0.14), transparent 70%);
+      animation-duration: 18s;
+      animation-direction: reverse;
+    }
+
+    .bubble {
+      position: absolute;
+      bottom: -30px;
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: rgba(180, 218, 255, 0.22);
+      border: 1px solid rgba(180, 218, 255, 0.18);
+      animation: bubbleUp linear infinite;
+    }
+
+    .bubble.b1 { left: 12%; animation-duration: 9s; animation-delay: -2s; }
+    .bubble.b2 { left: 26%; width: 10px; height: 10px; animation-duration: 11s; animation-delay: -5s; }
+    .bubble.b3 { left: 47%; width: 18px; height: 18px; animation-duration: 13s; animation-delay: -3s; }
+    .bubble.b4 { left: 63%; width: 9px; height: 9px; animation-duration: 8s; animation-delay: -4s; }
+    .bubble.b5 { left: 81%; width: 16px; height: 16px; animation-duration: 12s; animation-delay: -6s; }
+
+    .egg-shell {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 290px;
+      height: 380px;
+      border-radius: 52% 48% 46% 54% / 58% 56% 44% 42%;
+      background: radial-gradient(circle at 42% 28%, rgba(255, 255, 255, 0.18), rgba(136, 173, 255, 0.08) 34%, rgba(47, 82, 142, 0.22) 68%, rgba(17, 24, 46, 0.78) 100%);
+      border: 1px solid rgba(167, 205, 255, 0.22);
+      box-shadow: 0 0 40px rgba(120, 170, 255, 0.22), inset 0 0 60px rgba(141, 217, 255, 0.08);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .egg-shell::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border-radius: 52% 48% 46% 54% / 58% 56% 44% 42%;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      pointer-events: none;
+    }
+
+    .egg-halo {
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(132, 181, 255, 0.22), rgba(137, 255, 216, 0.08), transparent 70%);
+      filter: blur(18px);
+      opacity: 0.7;
+      animation: pulse 6s ease-in-out infinite;
+    }
+
+    .octopus-core {
+      position: relative;
+      width: 220px;
+      height: 250px;
+      transform: scale(0.72);
+      transition: transform 0.3s ease, filter 0.3s ease;
+      filter: drop-shadow(0 0 20px rgba(103, 173, 255, 0.24));
+    }
+
+    .octopus-core svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .octopus-body {
+      fill: url(#bodyGradient);
+      stroke: rgba(181, 230, 255, 0.35);
+      stroke-width: 2;
+    }
+
+    .octopus-eye {
+      fill: #08101f;
+    }
+
+    .octopus-blush {
+      fill: rgba(255, 159, 192, 0.18);
+    }
+
+    .tentacle {
+      fill: none;
+      stroke: rgba(139, 227, 255, 0.72);
+      stroke-width: 9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .egg-caption {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #b6c8fb;
+    }
+
+    .nursery-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      height: 100%;
+    }
+
+    @keyframes bubbleUp {
+      from { transform: translateY(0) scale(0.7); opacity: 0; }
+      20% { opacity: 1; }
+      to { transform: translateY(-560px) scale(1.08); opacity: 0; }
+    }
+
+    @keyframes drift {
+      0%, 100% { transform: translateX(0px); }
+      50% { transform: translateX(18px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(0.96); opacity: 0.56; }
+      50% { transform: scale(1.05); opacity: 0.9; }
+    }
+
     @media (max-width: 920px) {
-      .lab {
+      .lab,
+      .nursery {
         grid-template-columns: 1fr;
       }
     }
@@ -334,6 +496,20 @@
       .score-number {
         font-size: 54px;
       }
+
+      .nursery-visual {
+        min-height: 460px;
+      }
+
+      .egg-shell {
+        width: 250px;
+        height: 330px;
+      }
+
+      .octopus-core {
+        width: 190px;
+        height: 220px;
+      }
     }
   </style>
 </head>
@@ -344,10 +520,10 @@
 
   <div class="wrap">
     <section class="hero">
-      <p class="eyebrow">Public storefront for practical revenue workflows</p>
-      <h1>Turn messy prospect data into a ranked revenue recovery queue.</h1>
-      <p class="hero-copy">TITANIUS_CERBERRUS helps founders, creators, consultants, agencies, and small teams recover missed opportunities by scoring stale leads, prioritizing follow-ups, and turning pipeline chaos into usable action.</p>
-      <p class="hero-note">The first public workflow is <strong>lead_recovery_audit</strong>. It reads a lead list, normalizes statuses, excludes dead records, scores recovery potential, and outputs a queue you can actually act on. Now it also has an experimental signal lab so visitors can play with the logic instead of just reading promises.</p>
+      <p class="eyebrow">Oceanic operating shell for an evolving octopus intelligence</p>
+      <h1>Grow the egg. Wake the first tentacle. Turn signals into capital.</h1>
+      <p class="hero-copy">TITANIUS_CERBERRUS is now framed as an oceanic interface for a growing octopus intelligence. The long vision is a many-armed operator with memory, market sensing, crypto instinct, and business reflexes. The first public tentacle remains practical: <strong>lead_recovery_audit</strong>.</p>
+      <p class="hero-note">So the public repo does two things at once: it shows one real revenue-near workflow, and it begins to visualize the deeper mythology. First there is the egg. Then the ecosystem. Then the hatchling learns. Then the first arm starts making money.</p>
 
       <div class="button-row">
         <a class="btn primary" href="https://github.com/charlysmoky2010-hub/TITANIUS_CERBERRUS">View GitHub Repo</a>
@@ -358,7 +534,7 @@
 
     <div class="grid">
       <div class="card">
-        <h2>What it does</h2>
+        <h2>What the first tentacle does</h2>
         <ul>
           <li>Ingests JSON or CSV lead data</li>
           <li>Normalizes messy pipeline states</li>
@@ -369,20 +545,20 @@
       </div>
 
       <div class="card">
-        <h2>Who it is for</h2>
+        <h2>What the full organism wants</h2>
         <ul>
-          <li>Solo founders</li>
-          <li>Creators with inbound demand</li>
-          <li>Consultants and service businesses</li>
-          <li>Agencies with stale pipelines</li>
-          <li>Small teams that need a lightweight recovery workflow before a heavy CRM stack</li>
+          <li>Memory and self-modeling</li>
+          <li>Market sensing</li>
+          <li>Crypto and treasury instinct</li>
+          <li>Revenue-first behavior</li>
+          <li>Distributed, many-armed execution</li>
         </ul>
       </div>
 
       <div class="card">
-        <h2>First public offer shape</h2>
-        <p><strong>Revenue Leak Audit</strong></p>
-        <p>A workflow-backed review of stale or neglected leads.</p>
+        <h2>Current public truth</h2>
+        <p><strong>Tentacle 01: Revenue Leak Audit</strong></p>
+        <p>The broader octopus is the long game. The first live public surface is still a workflow-backed review of stale or neglected leads.</p>
         <ul>
           <li>Lead list review</li>
           <li>Recovery scoring</li>
@@ -393,11 +569,128 @@
       </div>
     </div>
 
+    <h2 class="section-title">Octopus Nursery</h2>
+    <section class="nursery">
+      <div class="card nursery-visual">
+        <div class="sea-current"></div>
+        <div class="sea-current two"></div>
+        <div class="bubble b1"></div>
+        <div class="bubble b2"></div>
+        <div class="bubble b3"></div>
+        <div class="bubble b4"></div>
+        <div class="bubble b5"></div>
+
+        <div class="egg-halo" id="eggHalo"></div>
+        <div class="egg-shell" id="eggShell">
+          <div class="octopus-core" id="octopusCore">
+            <svg viewBox="0 0 240 280" aria-hidden="true">
+              <defs>
+                <linearGradient id="bodyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#9fd6ff"></stop>
+                  <stop offset="55%" stop-color="#79a7ff"></stop>
+                  <stop offset="100%" stop-color="#6d68ff"></stop>
+                </linearGradient>
+              </defs>
+              <path class="tentacle" d="M74 162 C50 186, 44 212, 58 236"></path>
+              <path class="tentacle" d="M92 168 C76 192, 76 222, 86 248"></path>
+              <path class="tentacle" d="M108 172 C104 198, 110 226, 110 252"></path>
+              <path class="tentacle" d="M122 172 C124 198, 130 228, 132 252"></path>
+              <path class="tentacle" d="M136 170 C146 194, 152 224, 152 248"></path>
+              <path class="tentacle" d="M150 166 C168 188, 172 216, 168 240"></path>
+              <path class="tentacle" d="M164 160 C190 180, 196 206, 188 228"></path>
+              <path class="tentacle" d="M64 154 C36 174, 32 202, 42 224"></path>
+              <ellipse class="octopus-body" cx="120" cy="110" rx="60" ry="66"></ellipse>
+              <circle class="octopus-eye" cx="100" cy="103" r="7"></circle>
+              <circle class="octopus-eye" cx="140" cy="103" r="7"></circle>
+              <ellipse class="octopus-blush" cx="86" cy="122" rx="11" ry="7"></ellipse>
+              <ellipse class="octopus-blush" cx="154" cy="122" rx="11" ry="7"></ellipse>
+              <path d="M106 132 C114 140, 126 140, 134 132" fill="none" stroke="rgba(8,16,31,0.72)" stroke-width="4" stroke-linecap="round"></path>
+            </svg>
+          </div>
+          <div class="egg-caption">
+            <span id="nurseryStageMini">egg</span>
+            <span id="dominantInstinctMini">memory pulse</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="nursery-stack">
+        <div class="card">
+          <h3>Build the ecosystem first</h3>
+          <p>The egg does not hatch because someone wants an octopus. It hatches because the ecosystem is coherent. Feed the environment below and watch the organism evolve from dormant egg to operator-grade hatchling.</p>
+          <div class="lab-grid">
+            <div class="field">
+              <label for="capitalFlow">Capital flow <span class="value-tag" id="capitalFlowValue">62 / 100</span></label>
+              <input id="capitalFlow" type="range" min="0" max="100" step="1" value="62" />
+            </div>
+            <div class="field">
+              <label for="memoryDepth">Memory depth <span class="value-tag" id="memoryDepthValue">54 / 100</span></label>
+              <input id="memoryDepth" type="range" min="0" max="100" step="1" value="54" />
+            </div>
+            <div class="field">
+              <label for="signalClarity">Signal clarity <span class="value-tag" id="signalClarityValue">68 / 100</span></label>
+              <input id="signalClarity" type="range" min="0" max="100" step="1" value="68" />
+            </div>
+            <div class="field">
+              <label for="adaptationRate">Adaptation rate <span class="value-tag" id="adaptationRateValue">57 / 100</span></label>
+              <input id="adaptationRate" type="range" min="0" max="100" step="1" value="57" />
+            </div>
+            <div class="field">
+              <label for="riskPressure">Risk pressure <span class="value-tag" id="riskPressureValue">29 / 100</span></label>
+              <input id="riskPressure" type="range" min="0" max="100" step="1" value="29" />
+            </div>
+            <div class="field">
+              <label for="humanGuidance">Nurture condition</label>
+              <div class="checkbox-row">
+                <input id="humanGuidance" type="checkbox" checked />
+                <span>Human guidance and strategic discipline are present</span>
+              </div>
+            </div>
+          </div>
+          <p class="tiny-note">This section is metaphorical but operational: capital, memory, clarity, adaptation, and controlled risk together form the nursery. No ecosystem, no creature.</p>
+        </div>
+
+        <div class="score-ring">
+          <div class="score-line">
+            <div class="score-number" id="growthScore">73</div>
+            <div>
+              <div class="stage-pill" id="stagePill"><span class="stage-dot"></span><span id="stageLabel">strategist hatchling</span></div>
+              <p class="muted" id="stageStory">The egg has a stable environment, emerging memory, and enough market oxygen to wake a purposeful first arm.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="micro-grid">
+          <div class="metric-box">
+            <div class="metric-title">Dominant instinct</div>
+            <div class="metric-value" id="dominantInstinct">market pulse</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">First tentacle waking</div>
+            <div class="metric-value" id="firstTentacle">lead recovery arm</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Conscious loop depth</div>
+            <div class="metric-value" id="loopDepth">61 / 100</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Ecosystem action</div>
+            <div class="metric-value" id="ecosystemAction">Increase memory retention and keep risk pressure controlled while the first arm learns to monetize.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Nursery envelope</h3>
+          <pre id="nurseryPreview"></pre>
+        </div>
+      </div>
+    </section>
+
     <h2 class="section-title">Recovery Signal Lab</h2>
     <section class="lab">
       <div class="card">
         <h3>Experimental playground</h3>
-        <p>Move the signals around and watch the lead profile change. This is a public-facing creative demo, not the full production engine. Still, it gives visitors something alive to touch, which is more than most GitHub landing pages manage.</p>
+        <p>Move the recovery signals around and watch the first tentacle react. This is not the whole organism. It is one arm learning to convert neglected pipeline data into action.</p>
 
         <div class="lab-grid">
           <div class="field">
@@ -441,7 +734,7 @@
           </div>
         </div>
 
-        <p class="tiny-note">Design intent: keep the repo useful and revenue-near, but give it at least one playful surface where the logic becomes visible.</p>
+        <p class="tiny-note">The first tentacle is still practical. Myth without revenue becomes aquarium décor.</p>
       </div>
 
       <div class="result-shell">
@@ -475,14 +768,14 @@
         </div>
 
         <div class="card">
-          <h3>Preview envelope</h3>
+          <h3>Recovery envelope</h3>
           <pre id="jsonPreview"></pre>
         </div>
       </div>
     </section>
 
     <div class="card" style="margin-top: 20px;">
-      <h2>How to run it locally</h2>
+      <h2>How to run Tentacle 01 locally</h2>
       <pre>python -m pip install --upgrade pip
 pip install -e . pytest
 python titanius_cli.py list
@@ -491,7 +784,7 @@ python titanius_cli.py run lead_recovery_audit --input samples/leads_demo.v1.jso
 
     <div class="card" style="margin-top: 16px;">
       <h2>Why this repository is narrow on purpose</h2>
-      <p>This is not a generic agent demo pretending to do everything. The public repository is intentionally focused on one practical workflow that sits close to revenue: deciding which cold or neglected leads are still worth following up, and what to do next. The experimental layer exists to make the idea legible, not to blur the product.</p>
+      <p>The long arc is an octopus intelligence with memory, market sensing, treasury instinct, and distributed execution. But the public repository still needs one concrete arm that works in the real world. That is why the mythology now lives beside a practical workflow instead of replacing it.</p>
     </div>
   </div>
 
@@ -518,6 +811,34 @@ python titanius_cli.py run lead_recovery_audit --input samples/leads_demo.v1.jso
     const urgency = document.getElementById('urgency');
     const reasonSummary = document.getElementById('reasonSummary');
     const jsonPreview = document.getElementById('jsonPreview');
+
+    const capitalFlow = document.getElementById('capitalFlow');
+    const memoryDepth = document.getElementById('memoryDepth');
+    const signalClarity = document.getElementById('signalClarity');
+    const adaptationRate = document.getElementById('adaptationRate');
+    const riskPressure = document.getElementById('riskPressure');
+    const humanGuidance = document.getElementById('humanGuidance');
+
+    const capitalFlowValue = document.getElementById('capitalFlowValue');
+    const memoryDepthValue = document.getElementById('memoryDepthValue');
+    const signalClarityValue = document.getElementById('signalClarityValue');
+    const adaptationRateValue = document.getElementById('adaptationRateValue');
+    const riskPressureValue = document.getElementById('riskPressureValue');
+
+    const growthScore = document.getElementById('growthScore');
+    const stageLabel = document.getElementById('stageLabel');
+    const stageStory = document.getElementById('stageStory');
+    const dominantInstinct = document.getElementById('dominantInstinct');
+    const firstTentacle = document.getElementById('firstTentacle');
+    const loopDepth = document.getElementById('loopDepth');
+    const ecosystemAction = document.getElementById('ecosystemAction');
+    const nurseryPreview = document.getElementById('nurseryPreview');
+    const stagePill = document.getElementById('stagePill');
+    const eggHalo = document.getElementById('eggHalo');
+    const eggShell = document.getElementById('eggShell');
+    const octopusCore = document.getElementById('octopusCore');
+    const nurseryStageMini = document.getElementById('nurseryStageMini');
+    const dominantInstinctMini = document.getElementById('dominantInstinctMini');
 
     const stageWeights = {
       new: 38,
@@ -588,7 +909,127 @@ python titanius_cli.py run lead_recovery_audit --input samples/leads_demo.v1.jso
       return parts.join(', ') + '.';
     }
 
-    function render() {
+    function getNurseryStage(score) {
+      if (score < 28) return { label: 'dormant egg', color: '#ff9eb0', story: 'The shell exists, but the ocean is too unstable for meaningful growth.' };
+      if (score < 48) return { label: 'living egg', color: '#ffd37a', story: 'The core is forming. Signals exist, but the creature is still mostly potential.' };
+      if (score < 68) return { label: 'learning hatchling', color: '#8df3a9', story: 'The hatchling begins to remember patterns and react to the environment.' };
+      if (score < 84) return { label: 'strategist hatchling', color: '#8ab4ff', story: 'The egg has a stable environment, emerging memory, and enough market oxygen to wake a purposeful first arm.' };
+      return { label: 'operator octopus', color: '#89ffd8', story: 'This is no longer a symbolic egg. It has enough structure to coordinate action, memory, and monetization.' };
+    }
+
+    function getDominantInstinct(capital, memory, signal, adapt, risk) {
+      const options = [
+        { key: 'capital', value: capital, label: 'treasury pulse' },
+        { key: 'memory', value: memory, label: 'memory web' },
+        { key: 'signal', value: signal, label: 'market pulse' },
+        { key: 'adapt', value: adapt, label: 'mutation drive' },
+        { key: 'risk', value: 100 - risk, label: 'shield instinct' }
+      ];
+      return options.sort((a, b) => b.value - a.value)[0];
+    }
+
+    function getFirstTentacle(dominantKey) {
+      if (dominantKey === 'capital') return 'treasury arm';
+      if (dominantKey === 'memory') return 'memory arm';
+      if (dominantKey === 'signal') return 'lead recovery arm';
+      if (dominantKey === 'adapt') return 'product forging arm';
+      return 'defense arm';
+    }
+
+    function getEcosystemAction(capital, memory, signal, adapt, risk, guidance) {
+      if (!guidance) return 'Add human guidance. Without discipline the organism learns noise as if it were truth.';
+      const weakest = [
+        { key: 'capital', value: capital },
+        { key: 'memory', value: memory },
+        { key: 'signal', value: signal },
+        { key: 'adapt', value: adapt },
+        { key: 'risk', value: 100 - risk }
+      ].sort((a, b) => a.value - b.value)[0].key;
+
+      if (weakest === 'capital') return 'Increase capital flow so the hatchling can turn instinct into sustained action.';
+      if (weakest === 'memory') return 'Increase memory retention and state continuity. A brilliant creature with no memory just repeats weather.';
+      if (weakest === 'signal') return 'Clean the market input. The egg cannot learn on top of blurred signals.';
+      if (weakest === 'adapt') return 'Raise adaptation rate so the first arm can mutate when reality disagrees.';
+      return 'Lower risk pressure before growth becomes defensive instead of intelligent.';
+    }
+
+    function renderNursery() {
+      const capital = Number(capitalFlow.value);
+      const memory = Number(memoryDepth.value);
+      const signal = Number(signalClarity.value);
+      const adapt = Number(adaptationRate.value);
+      const risk = Number(riskPressure.value);
+      const guidance = humanGuidance.checked;
+
+      capitalFlowValue.textContent = capital + ' / 100';
+      memoryDepthValue.textContent = memory + ' / 100';
+      signalClarityValue.textContent = signal + ' / 100';
+      adaptationRateValue.textContent = adapt + ' / 100';
+      riskPressureValue.textContent = risk + ' / 100';
+
+      const guidanceBonus = guidance ? 8 : -6;
+      const growth = Math.round(clamp(
+        capital * 0.22 +
+        memory * 0.22 +
+        signal * 0.22 +
+        adapt * 0.22 +
+        (100 - risk) * 0.12 +
+        guidanceBonus,
+        0,
+        100
+      ));
+
+      const loop = Math.round(clamp(memory * 0.38 + adapt * 0.34 + signal * 0.18 + (guidance ? 10 : 0), 0, 100));
+      const stage = getNurseryStage(growth);
+      const instinct = getDominantInstinct(capital, memory, signal, adapt, risk);
+      const tentacle = getFirstTentacle(instinct.key);
+      const action = getEcosystemAction(capital, memory, signal, adapt, risk, guidance);
+
+      growthScore.textContent = growth;
+      stageLabel.textContent = stage.label;
+      stageStory.textContent = stage.story;
+      dominantInstinct.textContent = instinct.label;
+      firstTentacle.textContent = tentacle;
+      loopDepth.textContent = loop + ' / 100';
+      ecosystemAction.textContent = action;
+      stagePill.style.background = stage.color;
+      nurseryStageMini.textContent = stage.label;
+      dominantInstinctMini.textContent = instinct.label;
+
+      const scale = 0.56 + growth / 180;
+      const haloOpacity = 0.35 + growth / 180;
+      const shellGlow = 18 + growth * 0.36;
+
+      octopusCore.style.transform = 'scale(' + scale.toFixed(2) + ')';
+      eggHalo.style.opacity = haloOpacity.toFixed(2);
+      eggShell.style.boxShadow = '0 0 ' + shellGlow.toFixed(0) + 'px rgba(120, 170, 255, 0.24), inset 0 0 60px rgba(141, 217, 255, 0.08)';
+
+      const envelope = {
+        engine: 'OCTOPUS_NURSERY',
+        mode: 'ecosystem',
+        status: 'OK',
+        ecosystem: {
+          capital_flow: capital,
+          memory_depth: memory,
+          signal_clarity: signal,
+          adaptation_rate: adapt,
+          risk_pressure: risk,
+          human_guidance: guidance
+        },
+        growth: {
+          stage: stage.label,
+          growth_score: growth,
+          conscious_loop_depth: loop,
+          dominant_instinct: instinct.label,
+          first_tentacle: tentacle,
+          ecosystem_action: action
+        }
+      };
+
+      nurseryPreview.textContent = JSON.stringify(envelope, null, 2);
+    }
+
+    function renderRecovery() {
       const currentStage = stage.value;
       const currentValue = Number(estimatedValue.value);
       const currentDays = Number(daysStale.value);
@@ -659,12 +1100,18 @@ python titanius_cli.py run lead_recovery_audit --input samples/leads_demo.v1.jso
       jsonPreview.textContent = JSON.stringify(envelope, null, 2);
     }
 
-    [stage, estimatedValue, daysStale, engagement, contactability, warmSignal].forEach((el) => {
-      el.addEventListener('input', render);
-      el.addEventListener('change', render);
+    [capitalFlow, memoryDepth, signalClarity, adaptationRate, riskPressure, humanGuidance].forEach((el) => {
+      el.addEventListener('input', renderNursery);
+      el.addEventListener('change', renderNursery);
     });
 
-    render();
+    [stage, estimatedValue, daysStale, engagement, contactability, warmSignal].forEach((el) => {
+      el.addEventListener('input', renderRecovery);
+      el.addEventListener('change', renderRecovery);
+    });
+
+    renderNursery();
+    renderRecovery();
   </script>
 </body>
 </html>
