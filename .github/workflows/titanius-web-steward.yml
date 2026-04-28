@@ -1,0 +1,79 @@
+name: TITANIUS Web Steward
+
+on:
+  push:
+    paths:
+      - 'web/**'
+      - 'agents/TITANIUS_WEB_STEWARD.md'
+      - '.github/workflows/titanius-web-steward.yml'
+  pull_request:
+    paths:
+      - 'web/**'
+      - 'agents/TITANIUS_WEB_STEWARD.md'
+      - '.github/workflows/titanius-web-steward.yml'
+  workflow_dispatch:
+
+jobs:
+  web-hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate web root files
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f web/ROOT.md
+          test -f web/registry/titanius-web-pages.json
+          test -f web/backlog/missing-items.md
+          test -f agents/TITANIUS_WEB_STEWARD.md
+
+      - name: Validate registry JSON
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m json.tool web/registry/titanius-web-pages.json >/tmp/titanius-web-registry.json
+
+      - name: Basic web secret guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -RInE '(PRIVATE KEY|BEGIN RSA|BEGIN OPENSSH|api[_-]?key|secret[_-]?key|access[_-]?token|wallet seed|mnemonic)' web agents/TITANIUS_WEB_STEWARD.md; then
+            echo 'Potential secret-like text found in web layer.' >&2
+            exit 1
+          fi
+
+      - name: Write steward report
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p steward-report
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          registry = json.loads(Path('web/registry/titanius-web-pages.json').read_text())
+          pages = registry.get('pages', [])
+          report = {
+              'system': registry.get('system'),
+              'status': registry.get('status'),
+              'page_count': len(pages),
+              'pages': [
+                  {
+                      'id': p.get('id'),
+                      'status': p.get('status'),
+                      'path': p.get('path'),
+                      'next_action': p.get('next_action')
+                  }
+                  for p in pages
+              ]
+          }
+          Path('steward-report/titanius-web-steward-report.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
+          print(json.dumps(report, indent=2))
+          PY
+
+      - name: Upload steward report
+        uses: actions/upload-artifact@v4
+        with:
+          name: titanius-web-steward-report
+          path: steward-report/titanius-web-steward-report.json
